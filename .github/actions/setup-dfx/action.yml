@@ -1,0 +1,35 @@
+name: Setup DFX
+description: Setup DFX
+
+inputs:
+  dfx-identity-pem:
+    description: "The DFX identity PEM content"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Setup DFX
+      uses: dfinity/setup-dfx@main
+      with:
+        dfx-version: "auto"
+
+    - name: Import DFX identity
+      shell: bash
+      run: |
+        if [ -n "${{ inputs.dfx-identity-pem }}" ]; then
+          echo "${{ inputs.dfx-identity-pem }}" > ./identity.pem
+          dfx identity import --ic --storage-mode plaintext ci_identity ./identity.pem
+          dfx identity use ci_identity
+        else
+          echo "No DFX identity PEM provided, skipping identity import."
+        fi
+
+    # just to check if the identity is imported correctly
+    - name: Print principal
+      shell: bash
+      run: |
+        if [ -n "${{ inputs.dfx-identity-pem }}" ]; then
+          dfx identity get-principal
+        else
+          echo "No DFX identity PEM provided, skipping principal print."
+        fi

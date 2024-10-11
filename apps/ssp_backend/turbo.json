@@ -1,0 +1,14 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "extends": ["//"],
+  "tasks": {
+    "deploy": {
+      "env": [
+        "ID_TOKEN_ISSUER_BASE_URL",
+        "ID_TOKEN_AUDIENCE",
+        "DFX_NETWORK",
+        "ENV_FILE_PATH"
+      ]
+    }
+  }
+}

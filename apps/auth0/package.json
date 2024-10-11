@@ -1,0 +1,14 @@
+{
+  "name": "auth0",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "deploy": "pnpm auth0:import",
+    "auth0:export": "dotenv -- ./scripts/auth0-cli.sh --export",
+    "auth0:import": "dotenv -- ./scripts/auth0-cli.sh --import"
+  },
+  "devDependencies": {
+    "auth0-deploy-cli": "^7.24.1",
+    "dotenv-cli": "^7.4.2"
+  }
+}

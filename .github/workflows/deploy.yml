@@ -1,0 +1,66 @@
+name: Deployments
+
+on:
+  # Enable this when you are ready to deploy using the CI/CD workflow
+  # workflow_run:
+  #   workflows: ["Unit and Integration Tests"]
+  #   types:
+  #     - completed
+  #   branches:
+  #     - main
+  workflow_dispatch:
+
+jobs:
+  check-workflow:
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'workflow_dispatch' || (github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success') }}
+    steps:
+      - name: Workflow check
+        run: exit 0
+
+  deploy:
+    needs:
+      - check-workflow
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+
+      - uses: ./.github/actions/setup-node
+
+      - uses: ./.github/actions/setup-rust
+        with:
+          cache-key: "build-wasm"
+
+      - uses: ./.github/actions/setup-dfx
+        with:
+          dfx-identity-pem: ${{ secrets.DFX_MAINNET_PEM }}
+
+      - name: Deploy SSP Backend
+        run: pnpm turbo run deploy --filter=ssp_backend
+        env:
+          ID_TOKEN_ISSUER_BASE_URL: https://${{ vars.AUTH0_DOMAIN }}/
+          ID_TOKEN_AUDIENCE: ${{ vars.MOBILE_APP_AUTH0_CLIENT_ID }}
+          DFX_NETWORK: ${{ vars.DFX_NETWORK }}
+
+  deploy-auth0:
+    needs:
+      - check-workflow
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+
+      - uses: ./.github/actions/setup-node
+
+      - name: Deploy Auth0
+        run: pnpm turbo run deploy --filter=auth0
+        env:
+          AUTH0_DOMAIN: ${{ vars.AUTH0_DOMAIN }}
+          AUTH0_CLIENT_ID: ${{ vars.AUTH0_DEPLOY_CLI_CLIENT_ID }}
+          AUTH0_CLIENT_SECRET: ${{ secrets.AUTH0_DEPLOY_CLI_CLIENT_SECRET }}
+          AUTH0_PRESERVE_KEYWORDS: true
+          AUTH0_ALLOW_DELETE: true
+          WEB_APP_URL: ${{ vars.WEB_APP_URL }}
+          HASURA_GRAPHQL_ENDPOINT: ${{ vars.HASURA_GRAPHQL_ENDPOINT }}
+          HASURA_GRAPHQL_ADMIN_SECRET: ${{ secrets.HASURA_GRAPHQL_ADMIN_SECRET }}

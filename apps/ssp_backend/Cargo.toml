@@ -1,0 +1,45 @@
+[package]
+name = "ssp_backend"
+version = "0.1.0"
+edition.workspace = true
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+candid.workspace = true
+ic-cdk = "0.15"
+ic-cdk-timers = "0.9"
+ic-stable-structures = "0.6"
+ic-certification.workspace = true
+canister_sig_util = { git = "https://github.com/dfinity/internet-identity", tag = "release-2024-08-21" }
+
+serde.workspace = true
+serde_json.workspace = true
+serde_bytes.workspace = true
+serde_cbor.workspace = true
+
+jsonwebtoken-rustcrypto = { git = "https://github.com/ilbertt/jsonwebtoken" }
+hex = "0.4"
+getrandom = { version = "0.2", features = ["custom"] }
+base64 = "0.22"
+sha2 = "0.10"
+uuid = { version = "1.10", features = ["serde"] }
+chrono = { version = "0.4", default-features = false, features = ["std"] }
+rand = { version = "0.8", default-features = false }
+rand_chacha = { version = "0.3", default-features = false }
+
+ssp_backend_types.workspace = true
+
+[dev-dependencies]
+hex-literal = "0.4"
+pocket-ic = "4.0"
+jwt-simple = "0.12"
+ic-agent = "0.37"
+ring = "0.17"
+ic-representation-independent-hash = "2.6"
+candid_parser = "0.1"
+rstest.workspace = true
+ic-certificate-verification = "2.6"

@@ -1,0 +1,129 @@
+type PublicKey = blob;
+type UserKey = PublicKey;
+type Timestamp = nat64;
+type Signature = blob;
+
+type PrepareDelegationResponse = record {
+    user_key : UserKey;
+    expiration : Timestamp;
+};
+
+type Delegation = record {
+    pubkey : PublicKey;
+    expiration : Timestamp;
+    targets : opt vec principal;
+};
+
+type SignedDelegation = record {
+    delegation : Delegation;
+    signature : Signature;
+};
+
+type GetDelegationResponse = variant {
+    signed_delegation : SignedDelegation;
+    no_such_delegation;
+};
+
+type Auth0JWK = record {
+    kty : text;
+    use : text;
+    n : text;
+    e : text;
+    kid : text;
+    x5t : text;
+    x5c : vec text;
+    alg : text;
+};
+
+type Auth0JWKS = record {
+    keys : vec Auth0JWK;
+};
+
+type Config = record {
+    backend_principal : opt principal;
+};
+
+type User = record {
+    sub : text;
+    db_id : text;
+    created_at : text;
+};
+
+type CertificateContent = record {
+    name : text;
+    issued_at : text;
+    sport_category : text;
+    notes : opt text;
+    file_uri : opt text;
+    external_id : opt text;
+    issuer_full_name : opt text;
+    issuer_club_name : opt text;
+};
+
+type Certificate = record {
+    user_principal : principal;
+    created_at : text;
+    content : CertificateContent;
+    managed_user_id : opt text;
+};
+
+type CreateCertificateContentRequest = record {
+    name : text;
+    issued_at : Timestamp;
+    sport_category : text;
+    notes : opt text;
+    file_uri : opt text;
+    external_id : opt text;
+    issuer_full_name : opt text;
+    issuer_club_name : opt text;
+};
+
+type CreateCertificateRequest = record {
+    user_db_id : text;
+    content : CreateCertificateContentRequest;
+    managed_user_db_id : opt text;
+};
+
+type CreateCertificateResponse = record {
+    id : text;
+};
+
+type GetUserCertificatesRequest = record {
+    user_principal : opt principal;
+    user_db_id : opt text;
+};
+
+type CertificatePreviewWithId = record {
+    id : text;
+    name : text;
+};
+
+type GetUserCertificatesResponse = record {
+    certificates : vec CertificatePreviewWithId;
+};
+
+type CertificateWithId = record {
+    id : text;
+    certificate_cbor_hex : text;
+};
+
+type GetCertificateResponse = record {
+    certificate : CertificateWithId;
+    ic_certificate : blob;
+    ic_certificate_witness : blob;
+};
+
+service : {
+    "prepare_delegation" : (text) -> (PrepareDelegationResponse);
+    "get_delegation" : (text, Timestamp) -> (GetDelegationResponse) query;
+    "sync_jwks" : () -> ();
+    "set_jwks" : (Auth0JWKS) -> ();
+    "get_jwks" : () -> (opt Auth0JWKS) query;
+    "set_backend_principal" : (principal) -> ();
+    "get_config" : () -> (Config) query;
+
+    "get_my_user" : () -> (User) query;
+    "create_certificate" : (CreateCertificateRequest) -> (CreateCertificateResponse);
+    "get_user_certificates" : (GetUserCertificatesRequest) -> (GetUserCertificatesResponse) query;
+    "get_certificate" : (text) -> (GetCertificateResponse) query;
+};

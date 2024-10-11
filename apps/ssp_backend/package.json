@@ -1,0 +1,17 @@
+{
+  "name": "ssp_backend",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "dfx start --clean --host 0.0.0.0:4943",
+    "lint": "ID_TOKEN_ISSUER_BASE_URL=https://dummy-issuer-url.local/ ID_TOKEN_AUDIENCE=dummy-audience cargo clippy --all-targets --all-features -- -D warnings",
+    "pretest": "ID_TOKEN_ISSUER_BASE_URL=http://integration-test.local/ ID_TOKEN_AUDIENCE=integration-test-audience ./scripts/pretest.sh",
+    "test:unit": "ID_TOKEN_ISSUER_BASE_URL=http://unit-test.local/ ID_TOKEN_AUDIENCE=unit-test-audience cargo test --package ssp_backend --lib",
+    "test:integration": "ID_TOKEN_ISSUER_BASE_URL=http://integration-test.local/ ID_TOKEN_AUDIENCE=integration-test-audience ./scripts/integration-test.sh",
+    "test": "pnpm test:unit && pnpm test:integration",
+    "deploy": "cd ../.. && dfx deploy --network=\"${DFX_NETWORK:-local}\" --yes ssp_backend"
+  },
+  "dependencies": {
+    "ssp_backend_types": "workspace:*"
+  }
+}

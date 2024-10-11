@@ -1,0 +1,28 @@
+{
+  "canisters": {
+    "ssp_backend": {
+      "type": "custom",
+      "wasm": "./target/wasm32-unknown-unknown/release/ssp_backend.wasm",
+      "candid": "apps/ssp_backend/ssp_backend.did",
+      "package": "ssp_backend",
+      "build": ["apps/ssp_backend/scripts/build-canister.sh"],
+      "declarations": {
+        "bindings": ["js", "ts"],
+        "output": "packages/ssp-backend/src/generated"
+      },
+      "metadata": [
+        {
+          "name": "candid:service"
+        }
+      ]
+    }
+  },
+  "defaults": {
+    "build": {
+      "args": "",
+      "packtool": ""
+    }
+  },
+  "output_env_file": "packages/config/.env",
+  "version": 1
+}

@@ -1,0 +1,13 @@
+{
+  "recommendations": [
+    "rust-lang.rust-analyzer",
+    "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode",
+    "expo.vscode-expo-tools",
+    "dfinity-foundation.vscode-motoko",
+    "graphql.vscode-graphql",
+    "graphql.vscode-graphql-syntax",
+    "styled-components.vscode-styled-components",
+    "lokalise.i18n-ally"
+  ]
+}

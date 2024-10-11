@@ -1,0 +1,17 @@
+pnpm-lock.yaml
+
+packages/ssp-backend/src/generated/
+
+apps/auth0/config/**/*.yaml
+apps/auth0/config/**/*.yml
+
+apps/mobile/android/
+apps/mobile/ios/
+
+apps/backend/schemaspy/
+apps/backend/hasura/metadata/
+
+packages/graphql/src/generated/
+packages/graphql/graphql.schema.json
+
+apps/storybook/storybook-static

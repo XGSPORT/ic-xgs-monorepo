@@ -1,0 +1,43 @@
+{
+  "name": "xgs-monorepo",
+  "private": true,
+  "scripts": {
+    "turbo": "turbo --cache-dir=.turbo",
+    "build": "pnpm turbo build",
+    "dev": "TURBO_EXPERIMENTAL_UI=true pnpm turbo dev",
+    "lint": "pnpm turbo lint",
+    "format": "prettier --write . && cargo fmt --verbose",
+    "format:check": "prettier --check . && cargo fmt -- --check",
+    "deploy:local": "pnpm turbo deploy:local",
+    "deploy": "pnpm turbo deploy",
+    "test": "pnpm turbo test"
+  },
+  "dependencies": {
+    "@dfinity/agent": "^2.1.1",
+    "@dfinity/identity": "^2.1.1",
+    "@dfinity/principal": "^2.1.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@repo/eslint-config": "workspace:*",
+    "@repo/typescript-config": "workspace:*",
+    "@types/eslint": "^8.56.5",
+    "@types/node": "^20.11.24",
+    "@types/react": "^18.2.77",
+    "@types/react-dom": "^18.2.25",
+    "eslint": "^8.57.0",
+    "prettier": "^3.2.5",
+    "turbo": "^2.0.6",
+    "typescript": "^5.3.3",
+    "vercel": "^37.1.0"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "packageManager": "pnpm@9.1.2",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ]
+}

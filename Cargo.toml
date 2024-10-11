@@ -1,0 +1,19 @@
+[workspace]
+members = ["apps/ssp_backend", "packages/ssp_backend_types"]
+resolver = "2"
+
+[workspace.package]
+edition = "2021"
+
+[workspace.dependencies]
+candid = "0.10"
+ic-certification = "2.6"
+
+serde = "1.0"
+serde_bytes = "0.11"
+serde_json = { version = "1.0", features = ["preserve_order"] }
+serde_cbor = "0.11"
+
+rstest = "0.18"
+
+ssp_backend_types = { path = "packages/ssp_backend_types" }
