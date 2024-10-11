@@ -25,6 +25,10 @@ Follow these steps to configure Auth0 for this project:
 
 1. [Create a Tenant](https://auth0.com/docs/get-started/auth0-overview/create-tenants) and get your Auth0 Tenant domain, which looks like `<TENANT_NAME>.<TENANT_REGION>.auth0.com`
 
+After creating the tenant, you can configure it by using the configuration available at [apps/auth0/config/tenant.yaml](./apps/auth0/config/tenant.yaml). See the Auth0 [docs](https://auth0.com/docs/deploy-monitor/deploy-cli-tool#call-the-deploy-cli) for more details.
+
+Below are the steps to configure the tenant manually.
+
 #### Create a Native Application
 
 The Auth0 Native Application is used to authenticated users from the [Mobile app](#mobile-app). Follow these steps:
@@ -41,19 +45,7 @@ The Auth0 Native Application is used to authenticated users from the [Mobile app
 
 The 1st step of the Auth0 React Native [Quickstart interactive guide](https://auth0.com/docs/quickstart/native/react-native-expo/interactive) can be helpful too.
 
-#### Create a Web Application
-
-The Auth0 Web Application is used to authenticated users from the [Web app](#web-app). Follow these steps:
-
-1. [Create a Web Application](https://auth0.com/docs/get-started/auth0-overview/create-applications/web-apps)
-2. In the _Dashboard > Applications > YOUR_APP > Settings_ tab:
-
-   - set the **Allowed Callback URLs** to `http://localhost:3000/api/auth/callback`
-   - set the **Allowed Logout URLs** to `http://localhost:3000`
-
-   When you'll deploy the web app on a public domain, you will have to adjust these URLs accordingly.
-
-3. Configure the **Login Flow** in order to add custom JWT claims to the token minted by Auth0 and sync the user with Hasura. See [this guide](https://hasura.io/learn/graphql/hasura-authentication/integrations/auth0/#customjwtclaims) for more details.
+4. Configure the **Login Flow** in order to add custom JWT claims to the token minted by Auth0 and sync the user with Hasura. See [this guide](https://hasura.io/learn/graphql/hasura-authentication/integrations/auth0/#customjwtclaims) for more details.
    Write the following **Login / Post Login Custom Action** (select the _Node.js 18_ runtime):
 
    **Hasura Sync User and JWT Claims**
@@ -138,15 +130,6 @@ The Auth0 Web Application is used to authenticated users from the [Web app](#web
 
 The Next.js Quickstart [guide](https://auth0.com/docs/quickstart/webapp/nextjs) can be helpful too.
 
-#### Test users
-
-Create the following test users in the Auth0 Dashboard:
-
-| Username                    | Password       |
-| --------------------------- | -------------- |
-| `testmanagerlugano@test.io` | `Thisisatest!` |
-| `testparent@test.io`        | `Thisisatest!` |
-
 ### Install dependencies
 
 To install the dependencies, run:
@@ -185,7 +168,7 @@ To deploy the backend canister on the local dfx replica, run the following comma
 
 ### Mobile app
 
-The mobile app is located in the [`apps/mobile`](./apps/mobile/) folder, and is built with [Expo](https://expo.dev/).
+An example of mobile app that works using the authentication flow implemented in the SSP canister is available at [ilbertt/ic-react-native-jwt-auth/src/app](https://github.com/ilbertt/ic-react-native-jwt-auth/tree/a71522a234be91a4b3aa9eb0ddb5b012aa4ecb6f/src/app), and is built with [Expo](https://expo.dev/). You can copy that app and place it in the `apps/mobile` folder, then follow the instructions below to run it.
 
 #### Run the mobile app in dev mode
 
@@ -208,38 +191,6 @@ To start the mobile app in dev mode, run the following commands **from the `apps
    ```
 
    More info on how to use Expo dev server on their docs: https://docs.expo.dev/more/expo-cli/#develop.
-
-### Web app
-
-The web app is located in the [`apps/web`](./apps/web/) folder, and is build with [Next.js](https://nextjs.org/).
-
-#### Run the web app in dev mode
-
-To start the web app in dev mode, run the following command **from the `apps/web` folder**:
-
-```bash
-pnpm dev
-```
-
-#### Build the web app
-
-To build the web app, run the following command **from the `apps/web` folder**:
-
-```bash
-pnpm build
-```
-
-### Off-chain Backend
-
-Head over to the off-chain backend's [README](./apps/backend/README.md) for more information.
-
-## Seed data
-
-Seed data is located in the [`apps/backend/hasura/seeds`](./apps/backend/hasura/seeds) folder. To apply the seed data, run:
-
-```bash
-pnpm hasura:seed-apply
-```
 
 ## Tests
 
